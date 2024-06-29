@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-password',
@@ -7,16 +8,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./password.component.scss'],
 })
 export class PasswordComponent {
-  constructor(private router: Router) {}
-
-  goToNextPage() {
-    this.router.navigate(['/user']);
-  }
-
-  //
+  username: string = '';
   password: string = '';
   strengthClasses: string[] = ['gray', 'gray', 'gray'];
   strengthText: string = '';
+
+  constructor(private authService: AuthService, private router: Router) {}
+
+  goToNextPage(): void {
+    // Сохраните данные в сервисе
+    this.authService.setCredentials(this.username, this.password);
+    // Перейдите на страницу пользователя
+    this.router.navigate(['/user']);
+  }
 
   checkStrength() {
     this.strengthClasses = ['gray', 'gray', 'gray'];
